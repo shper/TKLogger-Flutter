@@ -1,0 +1,9 @@
+.DS_Store
+.dart_tool/
+.metadata
+.packages
+.pub/
+.idea/
+*.iml
+build/
+pubspec.lock

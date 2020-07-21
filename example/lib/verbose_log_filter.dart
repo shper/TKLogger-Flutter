@@ -3,12 +3,12 @@ import 'package:tk_logger/model/tk_log_model.dart';
 
 class VerboseLogFilter extends TKLogBaseFilter {
   @override
-  TKLogModel handlerLog(TKLogModel log) {
-    if (log.functionName == "_printVerboseLog") {
-      log.isIgnore = true;
+  TKLogModel handlerLog(TKLogModel tkLog) {
+    if (tkLog.functionName == "_printVerboseLog") {
+      tkLog.isIgnore = true;
     }
 
-    return log;
+    return tkLog;
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:tk_logger/model/tk_log_model.dart';
 import 'package:tk_logger/tk_log_level.dart';
 import 'package:tk_logger/tk_logger.dart';
 
@@ -13,14 +14,11 @@ abstract class TKLogBaseDestination {
   /// set custom log level colors for each level
   LevelColor levelColor = LevelColor();
 
-  String handlerLog(TKLogLevel level, String message, String internalMessage,
-      String clazzName, String fileName, String functionName, String line) {
-    return formatLog(level, message, internalMessage, clazzName, fileName,
-        functionName, line);
+  String handlerLog(TKLogModel tkLog) {
+    return formatLog(tkLog);
   }
 
-  String formatLog(TKLogLevel level, String message, String internalMessage,
-      String clazzName, String fileName, String functionName, String line) {
+  String formatLog(TKLogModel tkLog) {
     String text = "";
     List<String> phrases = "%i${this.format}".split("%");
 
@@ -41,32 +39,32 @@ abstract class TKLogBaseDestination {
           break;
         case "C": // LevelColor
           text +=
-              paddedString(colorForLevel(level), remainingPhrase.toString());
+              paddedString(colorForLevel(tkLog.level), remainingPhrase.toString());
           break;
         case "L": // Level
-          text += paddedString(levelWord(level), remainingPhrase.toString());
+          text += paddedString(levelWord(tkLog.level), remainingPhrase.toString());
           break;
         case "T": // Tag
           text += paddedString(loggerTag(), remainingPhrase.toString());
           break;
         case "c": // clazzName
-          text += paddedString(clazzName, remainingPhrase.toString());
+          text += paddedString(tkLog.clazzName, remainingPhrase.toString());
           break;
         case "F": // fileName
-          text += paddedString(fileName, remainingPhrase.toString());
+          text += paddedString(tkLog.fileName, remainingPhrase.toString());
           break;
         case "f": // functionName
-          text += paddedString(functionName, remainingPhrase.toString());
+          text += paddedString(tkLog.functionName, remainingPhrase.toString());
           break;
         case "l": // line
-          text += paddedString(line.toString(), remainingPhrase.toString());
+          text += paddedString("${tkLog.lineNum}", remainingPhrase.toString());
           break;
         case "M": // Message
-          text += paddedString(message ?? "", remainingPhrase.toString());
+          text += paddedString(tkLog.message ?? "", remainingPhrase.toString());
           break;
         case "I": // internal
           text +=
-              paddedString(internalMessage ?? "", remainingPhrase.toString());
+              paddedString(tkLog.internalMessage ?? "", remainingPhrase.toString());
           break;
         default:
           text += remainingPhrase;

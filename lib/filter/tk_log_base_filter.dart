@@ -5,6 +5,6 @@ import 'package:tk_logger/model/tk_log_model.dart';
 /// Date : 2020.07.21
 abstract class TKLogBaseFilter {
 
-  TKLogModel handlerLog(TKLogModel log);
+  TKLogModel handlerLog(TKLogModel tkLog);
 
 }

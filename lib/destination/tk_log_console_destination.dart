@@ -1,4 +1,5 @@
 import 'package:tk_logger/destination/tk_log_base_destination.dart';
+import 'package:tk_logger/model/tk_log_model.dart';
 import 'package:tk_logger/tk_log_level.dart';
 
 /// Author : Shper
@@ -6,13 +7,11 @@ import 'package:tk_logger/tk_log_level.dart';
 /// Date : 2020.06.23
 class TKLogConsoleDestination extends TKLogBaseDestination {
   @override
-  String handlerLog(TKLogLevel level, String message, String interMsg,
-      String clazzName, String fileName, String functionName, String line) {
-    String logStr = super.handlerLog(
-        level, message, interMsg, clazzName, fileName, functionName, line);
+  String handlerLog(TKLogModel tkLog) {
+    String logStr = super.handlerLog(tkLog);
 
     print(logStr);
 
-    return logStr;
+    return "";
   }
 }

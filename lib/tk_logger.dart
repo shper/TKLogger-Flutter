@@ -68,31 +68,24 @@ class TKLogger {
     if (level.index < minLevel.index) {
       return;
     }
-    TKLogModel logModel =
+    TKLogModel tkLog =
         TKLogUtils.parseStackTrace(StackTrace.current.toString());
-    logModel.level = level;
-    logModel.message = message;
-    logModel.internalMessage = internalMessage ?? "";
+    tkLog.level = level;
+    tkLog.message = message;
+    tkLog.internalMessage = internalMessage ?? "";
 
     // Use filters to process logs
     _filters.forEach((filter) {
-      logModel = filter.handlerLog(logModel);
+      tkLog = filter.handlerLog(tkLog);
     });
 
-    if (logModel.isIgnore) {
+    if (tkLog.isIgnore) {
       return;
     }
 
     // dispatch the logs to destination
     _destinations.forEach((destination) {
-      destination.handlerLog(
-          level,
-          message,
-          internalMessage ?? "",
-          logModel.clazzName,
-          logModel.fileName,
-          logModel.functionName,
-          logModel.lineNum);
+      destination.handlerLog(tkLog);
     });
   }
 }

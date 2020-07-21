@@ -1,6 +1,4 @@
 import 'dart:collection';
-import 'dart:isolate';
-
 import 'package:tk_logger/destination/tk_log_base_destination.dart';
 import 'package:tk_logger/model/tk_log_model.dart';
 import 'package:tk_logger/tk_log_level.dart';
@@ -36,12 +34,12 @@ class TKLogger {
     _dispatchLog(TKLogLevel.VERBOSE, message, interMessage: interMessage);
   }
 
-  static void debug(String message, {String interMessage}) {
-    _dispatchLog(TKLogLevel.DEBUG, message, interMessage: interMessage);
-  }
-
   static void info(String message, {String interMessage}) {
     _dispatchLog(TKLogLevel.INFO, message, interMessage: interMessage);
+  }
+
+  static void debug(String message, {String interMessage}) {
+    _dispatchLog(TKLogLevel.DEBUG, message, interMessage: interMessage);
   }
 
   static void warning(String message, {String interMessage}) {
@@ -63,6 +61,7 @@ class TKLogger {
         TKLogUtils.parseStackTrace(StackTrace.current.toString());
 
     // Use filters to process logs
+
 
     // dispatch the logs to destination
     _destinations.forEach((destination) {

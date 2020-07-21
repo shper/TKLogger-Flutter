@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:tk_logger/destination/tk_log_base_destination.dart';
+import 'package:tk_logger/filter/tk_log_base_filter.dart';
 import 'package:tk_logger/model/tk_log_model.dart';
 import 'package:tk_logger/tk_log_level.dart';
 import 'package:tk_logger/util/tk_log_utils.dart';
@@ -11,11 +12,21 @@ class TKLogger {
   static var loggerTag = "TKLogger";
   static var minLevel = TKLogLevel.VERBOSE;
 
+  static var _filters = List<TKLogBaseFilter>();
   static var _destinations = HashSet<TKLogBaseDestination>();
 
   static void setup({tag = "TKLogger", level = TKLogLevel.VERBOSE}) {
     loggerTag = tag;
     minLevel = level;
+  }
+
+  /// Filter
+  static void addFilter(TKLogBaseFilter filter, {int priority}) {
+    if (priority != null) {
+      _filters.insert(priority, filter);
+    } else {
+      _filters.add(filter);
+    }
   }
 
   /// Destination
@@ -30,45 +41,54 @@ class TKLogger {
 
   /// Levels
 
-  static void verbose(String message, {String interMessage}) {
-    _dispatchLog(TKLogLevel.VERBOSE, message, interMessage: interMessage);
+  static void verbose(String message, {String internalMessage}) {
+    _dispatchLog(TKLogLevel.VERBOSE, message, internalMessage: internalMessage);
   }
 
-  static void info(String message, {String interMessage}) {
-    _dispatchLog(TKLogLevel.INFO, message, interMessage: interMessage);
+  static void info(String message, {String internalMessage}) {
+    _dispatchLog(TKLogLevel.INFO, message, internalMessage: internalMessage);
   }
 
-  static void debug(String message, {String interMessage}) {
-    _dispatchLog(TKLogLevel.DEBUG, message, interMessage: interMessage);
+  static void debug(String message, {String internalMessage}) {
+    _dispatchLog(TKLogLevel.DEBUG, message, internalMessage: internalMessage);
   }
 
-  static void warning(String message, {String interMessage}) {
-    _dispatchLog(TKLogLevel.WARN, message, interMessage: interMessage);
+  static void warning(String message, {String internalMessage}) {
+    _dispatchLog(TKLogLevel.WARN, message, internalMessage: internalMessage);
   }
 
-  static void error(String message, {String interMessage}) {
-    _dispatchLog(TKLogLevel.ERROR, message, interMessage: interMessage);
+  static void error(String message, {String internalMessage}) {
+    _dispatchLog(TKLogLevel.ERROR, message, internalMessage: internalMessage);
   }
 
   /// Inner Function
 
   static void _dispatchLog(TKLogLevel level, String message,
-      {String interMessage}) {
+      {String internalMessage}) {
     if (level.index < minLevel.index) {
       return;
     }
     TKLogModel logModel =
         TKLogUtils.parseStackTrace(StackTrace.current.toString());
+    logModel.level = level;
+    logModel.message = message;
+    logModel.internalMessage = internalMessage ?? "";
 
     // Use filters to process logs
+    _filters.forEach((filter) {
+      logModel = filter.handlerLog(logModel);
+    });
 
+    if (logModel.isIgnore) {
+      return;
+    }
 
     // dispatch the logs to destination
     _destinations.forEach((destination) {
       destination.handlerLog(
           level,
           message,
-          interMessage ?? "",
+          internalMessage ?? "",
           logModel.clazzName,
           logModel.fileName,
           logModel.functionName,

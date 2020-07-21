@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tk_logger/destination/tk_log_console_destination.dart';
 import 'package:tk_logger/tk_logger.dart';
+import 'package:tk_logger_example/verbose_log_filter.dart';
 
 void main() {
   TKLogger.setup();
@@ -32,20 +33,24 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildLogButton(context, "Verbose Log", Colors.deepPurpleAccent,
+            _buildLogButton(
+                context, "Add Verbose log Filter", Colors.blueAccent, () {
+              TKLogger.addFilter(VerboseLogFilter());
+            }),
+            _buildLogButton(context, "Verbose log", Colors.deepPurpleAccent,
                 () {
               _printVerboseLog();
             }),
-            _buildLogButton(context, "Info Log", Colors.blue, () {
+            _buildLogButton(context, "Info log", Colors.blue, () {
               _printInfoLog();
             }),
-            _buildLogButton(context, "Debug Log", Colors.green, () {
+            _buildLogButton(context, "Debug log", Colors.green, () {
               _printDebugLog();
             }),
-            _buildLogButton(context, "Warning Log", Colors.orange, () {
+            _buildLogButton(context, "Warning log", Colors.orange, () {
               _printWarningLog();
             }),
-            _buildLogButton(context, "Error Log", Colors.red, () {
+            _buildLogButton(context, "Error log", Colors.red, () {
               _printErrorLog();
             }),
           ],
@@ -55,7 +60,7 @@ class HomePage extends StatelessWidget {
   Widget _buildLogButton(
       BuildContext context, String title, Color color, VoidCallback onPressed) {
     return Container(
-        margin: EdgeInsets.only(top: 20, bottom: 20),
+        margin: EdgeInsets.only(top: 15, bottom: 15),
         child: MaterialButton(
           minWidth: MediaQuery.of(context).size.width - 100,
           height: 45,

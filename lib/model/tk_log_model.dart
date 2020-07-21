@@ -1,10 +1,11 @@
+import 'package:tk_logger/tk_log_level.dart';
 
 /// Author : Shper
 /// EMail : me@shper.cn
 /// Date : 2020.06.23
 class TKLogModel {
-
-  bool isIgnore;
+  TKLogLevel level;
+  bool isIgnore = false;
   String message;
   String internalMessage;
   String clazzName;
@@ -12,4 +13,16 @@ class TKLogModel {
   String functionName;
   String lineNum;
 
+  TKLogModel();
+
+  TKLogModel.fromJson(Map<String, dynamic> data) {
+    level = data["level"] ?? TKLogLevel.VERBOSE;
+    isIgnore = data["isIgnore"] ?? false;
+    message = data["message"] ?? "";
+    internalMessage = data["internalMessage"] ?? "";
+    clazzName = data["clazzName"] ?? "";
+    fileName = data["fileName"] ?? "";
+    functionName = data["functionName"] ?? "";
+    lineNum = data["lineNum"] ?? "";
+  }
 }

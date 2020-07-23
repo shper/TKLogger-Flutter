@@ -1,4 +1,5 @@
 import 'package:tk_logger/tk_log_level.dart';
+export 'package:tk_logger/tk_log_level.dart';
 
 /// Author : Shper
 /// EMail : me@shper.cn
@@ -11,7 +12,7 @@ class TKLogModel {
   String clazzName;
   String fileName;
   String functionName;
-  String lineNum;
+  int lineNum;
 
   TKLogModel();
 
@@ -23,6 +24,6 @@ class TKLogModel {
     clazzName = data["clazzName"] ?? "";
     fileName = data["fileName"] ?? "";
     functionName = data["functionName"] ?? "";
-    lineNum = data["lineNum"] ?? "";
+    lineNum = data["lineNum"] ?? -1;
   }
 }

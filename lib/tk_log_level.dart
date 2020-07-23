@@ -9,6 +9,13 @@ enum TKLogLevel {
   ERROR,
 }
 
+extension TKLogLevelName on TKLogLevel {
+  String name() {
+    var fullName = this.toString();
+    return fullName.substring(fullName.lastIndexOf(".") + 1, fullName.length);
+  }
+}
+
 class LevelString {
   var verbose = "V";
   var debug = "D";

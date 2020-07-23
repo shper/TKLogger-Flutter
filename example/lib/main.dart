@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tk_logger/destination/tk_log_console_destination.dart';
+import 'package:tk_logger/destination/tk_log_platform_destination.dart';
 import 'package:tk_logger/tk_logger.dart';
 import 'package:tk_logger_example/verbose_log_filter.dart';
 
 void main() {
   TKLogger.setup();
   TKLogger.addDestination(TKLogConsoleDestination());
+  TKLogger.addDestination(TKLogPlatformDestination());
 
   runApp(MyApp());
 }

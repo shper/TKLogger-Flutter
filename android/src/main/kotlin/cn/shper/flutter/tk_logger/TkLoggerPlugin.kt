@@ -1,6 +1,8 @@
 package cn.shper.flutter.tk_logger
 
 import androidx.annotation.NonNull;
+import cn.shper.tklogger.TKLogLevel
+import cn.shper.tklogger.model.TKLogModel
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -10,38 +12,44 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 /** TkLoggerPlugin */
-public class TkLoggerPlugin: FlutterPlugin, MethodCallHandler {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
+class TkLoggerPlugin: FlutterPlugin, MethodCallHandler {
+
   private lateinit var channel : MethodChannel
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "tk_logger")
-    channel.setMethodCallHandler(this);
-  }
-
-  // This static function is optional and equivalent to onAttachedToEngine. It supports the old
-  // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
-  // plugin registration via this function while apps migrate to use the new Android APIs
-  // post-flutter-1.12 via https://flutter.dev/go/android-project-migration.
-  //
-  // It is encouraged to share logic between onAttachedToEngine and registerWith to keep
-  // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
-  // depending on the user's project. onAttachedToEngine or registerWith must both be defined
-  // in the same class.
   companion object {
+
+    const val METHOD_CHANNEL_NAME: String = "plugin.shper.cn/tk_logger"
+
+    /// Flutter 1.12+
     @JvmStatic
     fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "tk_logger")
+      val channel = MethodChannel(registrar.messenger(), METHOD_CHANNEL_NAME)
       channel.setMethodCallHandler(TkLoggerPlugin())
     }
   }
 
+  /// Flutter 1.17+
+  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, METHOD_CHANNEL_NAME)
+    channel.setMethodCallHandler(this);
+  }
+
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+    if (call.method == "handlerLog") {
+
+     val tkLog = TKLogModel().apply {
+       level = TKLogLevel.valueOf(call.argument<String>("level") ?: TKLogLevel.VERBOSE.name)
+       message = call.argument<String>("message") ?: ""
+       internalMessage = call.argument<String>("internalMessage") ?: ""
+       clazzName = call.argument<String>("clazzName") ?: ""
+       fileName = call.argument<String>("fileName") ?: ""
+       functionName = call.argument<String>("functionName") ?: ""
+       lineNum = call.argument<Int>("lineNum") ?: -1
+       threadName = "Flutter"
+      }
+      result.success("")
+
+      TKLoggerFlutter.handlerLog(tkLog)
     } else {
       result.notImplemented()
     }

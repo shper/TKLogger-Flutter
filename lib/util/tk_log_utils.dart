@@ -47,7 +47,7 @@ class TKLogUtils {
 
       List<String> infoList = secondPartList[1].split(":");
       logModel.fileName = infoList[0] ?? "";
-      logModel.lineNum = infoList[1] ?? "";
+      logModel.lineNum = int.parse(infoList[1]) ?? -1;
     }
 
     return logModel;

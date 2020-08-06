@@ -2,7 +2,7 @@ name: tk_logger
 description: A new flutter plugin project.
 version: 1.0.0
 author: me@shper.cn
-homepage:
+homepage: https://github.com/shper/TKLogger-Flutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

@@ -54,7 +54,7 @@ class TKLogger {
   }
 
   static void warning(String message, {String internalMessage}) {
-    _dispatchLog(TKLogLevel.WARN, message, internalMessage: internalMessage);
+    _dispatchLog(TKLogLevel.WARNING, message, internalMessage: internalMessage);
   }
 
   static void error(String message, {String internalMessage}) {

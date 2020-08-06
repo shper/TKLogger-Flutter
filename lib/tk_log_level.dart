@@ -5,7 +5,7 @@ enum TKLogLevel {
   VERBOSE,
   DEBUG,
   INFO,
-  WARN,
+  WARNING,
   ERROR,
 }
 

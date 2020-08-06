@@ -15,12 +15,14 @@ class TKLogPlatformDestination extends TKLogBaseDestination {
   @override
   String handlerLog(TKLogModel tkLog) {
     Map<String, dynamic> params = {
-      "level": tkLog.level.name(),
+      "levelIndex": tkLog.level.index,
+      "levelName": tkLog.level.name(),
       "message": tkLog.message,
       "internalMessage": tkLog.internalMessage,
       "clazzName": tkLog.clazzName,
       "fileName": tkLog.fileName,
       "functionName": tkLog.functionName,
+      "threadName": "Flutter",
       "lineNum": tkLog.lineNum,
     };
     _methodChannel.invokeMethod("handlerLog", params);

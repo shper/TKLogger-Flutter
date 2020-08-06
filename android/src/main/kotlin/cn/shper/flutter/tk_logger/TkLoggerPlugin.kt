@@ -38,7 +38,7 @@ class TkLoggerPlugin: FlutterPlugin, MethodCallHandler {
     if (call.method == "handlerLog") {
 
      val tkLog = TKLogModel().apply {
-       level = TKLogLevel.valueOf(call.argument<String>("level") ?: TKLogLevel.VERBOSE.name)
+       level = TKLogLevel.valueOf(call.argument<String>("levelName") ?: TKLogLevel.VERBOSE.name)
        message = call.argument<String>("message") ?: ""
        internalMessage = call.argument<String>("internalMessage") ?: ""
        clazzName = call.argument<String>("clazzName") ?: ""

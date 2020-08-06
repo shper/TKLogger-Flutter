@@ -94,7 +94,7 @@ abstract class TKLogBaseDestination {
         return levelColor.debug;
       case TKLogLevel.INFO:
         return levelColor.info;
-      case TKLogLevel.WARN:
+      case TKLogLevel.WARNING:
         return levelColor.warning;
       case TKLogLevel.ERROR:
         return levelColor.error;
@@ -110,7 +110,7 @@ abstract class TKLogBaseDestination {
         return levelString.debug;
       case TKLogLevel.INFO:
         return levelString.info;
-      case TKLogLevel.WARN:
+      case TKLogLevel.WARNING:
         return levelString.warning;
       case TKLogLevel.ERROR:
         return levelString.error;

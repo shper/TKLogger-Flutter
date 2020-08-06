@@ -1,6 +1,5 @@
 package cn.shper.flutter.tk_logger
 
-import cn.shper.tklogger.TKLogger
 import cn.shper.tklogger.destination.TKLogBaseDestination
 import cn.shper.tklogger.model.TKLogModel
 import cn.shper.tklogger.thread.ThreadPoolUtils

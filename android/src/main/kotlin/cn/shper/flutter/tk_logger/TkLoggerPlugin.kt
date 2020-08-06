@@ -45,7 +45,7 @@ class TkLoggerPlugin: FlutterPlugin, MethodCallHandler {
        fileName = call.argument<String>("fileName") ?: ""
        functionName = call.argument<String>("functionName") ?: ""
        lineNum = call.argument<Int>("lineNum") ?: -1
-       threadName = "Flutter"
+       threadName = call.argument<String>("threadName") ?: "Flutter"
       }
       result.success("")
 
